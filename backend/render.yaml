@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: ecoscore-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        fromService:
+          type: web
+          name: ecoscore-backend
+          property: port
+    healthCheckPath: /api/health
+    disk:
+      name: ecoscore-data
+      mountPath: /app/data
+      sizeGB: 1
